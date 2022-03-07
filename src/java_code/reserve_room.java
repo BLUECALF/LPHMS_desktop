@@ -368,13 +368,20 @@ public class reserve_room extends JFrame implements ActionListener{
             
             
             String Message = "Dear "+firstname+",\n"+
-                    "You Have Booked Room number :"+room_no+
+                    "You Have reserved Room number :"+room_no+
                     "\nBooking Id is :"+booking_id+
                     "\nCheck-in date or arrival Date is :"+checkindate+
                     "\nCheck-Out Date or Departure date is  :"+checkoutdate;
                         
             JOptionPane.showMessageDialog(null,Message," Reservation Success ", JOptionPane.INFORMATION_MESSAGE); 
             
+            //clear fields
+            checkin_date_field.setText("");
+            checkout_date_field.setText("");
+            available_rooms_label.setText("Available Rooms : None now please Fill the dates");
+            room_no_field.setText("");
+            firstname_field.setText("");
+            phone_field.setText("");
             }           
             
             

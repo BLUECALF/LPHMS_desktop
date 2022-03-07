@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.MessagingException;
@@ -50,9 +51,10 @@ public class accomodation_staff_page extends JFrame implements ActionListener{
     JButton reserve_room_button;
     
     JLabel cancel_label;
-    JLabel boking_id_label;
-    JTextArea booking_id_area;
+    JLabel booking_id_label2;
+    JTextArea booking_id_field2;
     
+        
     JButton cancel_reservation_button;
     
     JButton exit_button;
@@ -151,12 +153,33 @@ public class accomodation_staff_page extends JFrame implements ActionListener{
         reserve_room_button.addActionListener(this);
        
         // reserve client button
+        
+        cancel_label =  new JLabel();
+        cancel_label.setText("Cancel Booking");
+        cancel_label.setFont(new Font("mv boli",Font.BOLD,18));
+        cancel_label.setForeground(Color.WHITE);
+        cancel_label.setBounds(100,400,200,50);
+        cancel_label.setHorizontalTextPosition(JLabel.CENTER);
+        
+        booking_id_label2 =  new JLabel();
+        booking_id_label2.setText("Booking Id ");
+        booking_id_label2.setFont(new Font("mv boli",Font.BOLD,13));
+        booking_id_label2.setForeground(Color.WHITE);
+        booking_id_label2.setBounds(50,460,100,50);
+        booking_id_label2.setHorizontalTextPosition(JLabel.CENTER);
+        
+        booking_id_field2 = new JTextArea();
+        booking_id_field2.setBounds(150,460,100,30);
+        booking_id_field2.setFont(new Font("mv boli",Font.BOLD,18));
+       
+        
         cancel_reservation_button = new JButton("Cancel Reservation");
-        cancel_reservation_button.setBounds(100,400,200,30);
+        cancel_reservation_button.setBounds(100,500,200,30);
         cancel_reservation_button.setFont(new Font("mv boli",Font.BOLD,18));
         cancel_reservation_button.setBorder(BorderFactory.createLineBorder(Color.yellow));
         cancel_reservation_button.setFocusable(false);        
         cancel_reservation_button.addActionListener(this);
+        
                      
         
         exit_button = new JButton("Exit");
@@ -179,6 +202,9 @@ public class accomodation_staff_page extends JFrame implements ActionListener{
         this.add(resident_id_field);
         this.add(checkout_button);
         this.add(reserve_room_button);
+        this.add(cancel_label);
+        this.add(booking_id_label2);
+        this.add(booking_id_field2);
         this.add(cancel_reservation_button);
         this.add(exit_button);
         
@@ -291,8 +317,69 @@ public class accomodation_staff_page extends JFrame implements ActionListener{
         }
            if(ae.getSource()== cancel_reservation_button)
         {
+            String booking_id2 = booking_id_field2.getText();         
+       String Message;
+        
+         
+         String query = "select * from bookings where booking_id="+"\""+booking_id2+"\"";
+         
+         ResultSet rs = db.query_function(query);
+         
+        try {
+            if(rs.next()) //this means the booking id is valid.
+            {
+                // get his Details First
+               String firstname = rs.getString("firstname");
+               String room_no = rs.getString("room_no");  
+               String email = rs.getString("email");
+               Date checkindate =rs.getDate("checkin_date");
+               Date checkoutdate = rs.getDate("checkout_date");
+               
+               String query1 = "SELECT * from residents WHERE resident_id="+"\"" +booking_id2+"\"";
+            ResultSet rs0 = db.query_function(query1);
             
+           
+                if(rs0.next()==true)
+                {
+                    // you are a resident - a d resident cannot cancel booking
+                  JOptionPane.showMessageDialog(null, "Cancel Reservation Failed,\nResident cannot cancel reservation ","Information" , JOptionPane.INFORMATION_MESSAGE);                
+                    return;
+                }
+                 
+                   
+                  Message = "Dear "+firstname+",\n"+
+                    "Do You want to CANCEL BOOKING of Room number :"+room_no+
+                    "\nBooking Id is :"+booking_id2+
+                    "\nCheck-in date or arrival Date is :"+checkindate+
+                    "\nCheck-Out Date or Depature date is  :"+checkoutdate;
+                
+              int response = JOptionPane.showConfirmDialog(this, Message, "Choose to continue ", JOptionPane.YES_NO_OPTION);
+            if(response==JOptionPane.NO_OPTION){return;}
+                
+               String Remove_statement = "DELETE from bookings where booking_id="+"\""+booking_id2+"\"";
+               int rows = db.update_function(Remove_statement);
+               if(rows==1)
+               {
+                   // cancel of booking Was Successful
+                  JOptionPane.showMessageDialog(null, "Cancel reservation of room number :"+room_no+" Success","" , JOptionPane.INFORMATION_MESSAGE);   
+                  
+                  //clear form
+                  booking_id_field2.setText("");
+               }
+                
+                
+            }else // the booking_id is invalid. foward to error page.
+            {
+           JOptionPane.showMessageDialog(null, "Cancel reservation in Failed,\n Booking Id Not Found In Database","" , JOptionPane.INFORMATION_MESSAGE);                
+            }
+        } catch (SQLException ex) {
+         
+            JOptionPane.showMessageDialog(null, ex.toString(),"SQL error" , JOptionPane.INFORMATION_MESSAGE);                
         }
+         
+    }
+            
+        
     }
     
     

@@ -215,8 +215,33 @@ public class accomodation_staff_page extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource() == checkin_button)
         {
-            //disable checkin button
-            checkin_button.disable();
+           checkin_button.setEnabled(false);
+           checkin();
+           checkin_button.setEnabled(true);
+           booking_id_field.setText("");
+        } 
+        if(ae.getSource()== reserve_room_button)
+        {
+            this.dispose();
+            new reserve_room(db);
+        }
+        if(ae.getSource()== exit_button)
+        {this.dispose();
+        new staff_login();
+        }
+           if(ae.getSource()== cancel_reservation_button)
+        { 
+            cancel_reservation_button.setEnabled(false);
+            cancel_reservation();
+            cancel_reservation_button.setEnabled(true);
+            booking_id_field2.setText("");        
+        }         
+      
+    }
+    
+   public void checkin()
+   {
+   
             //we checkin a client.
             // get booking id 
             String booking_id = booking_id_field.getText();
@@ -304,22 +329,12 @@ public class accomodation_staff_page extends JFrame implements ActionListener{
             } catch (SQLException ex) {
                 Logger.getLogger(accomodation_staff_page.class.getName()).log(Level.SEVERE, null, ex);
             }
-         checkin_button.enable();
-        } 
-        if(ae.getSource()== reserve_room_button)
-        {
-            this.dispose();
-            new reserve_room(db);
-        }
-        if(ae.getSource()== exit_button)
-        {this.dispose();
-        new staff_login();
-        }
-           if(ae.getSource()== cancel_reservation_button)
-        {
-            String booking_id2 = booking_id_field2.getText();         
-       String Message;
-        
+         
+   }
+   public void cancel_reservation()
+   {
+       String booking_id2 = booking_id_field2.getText();     
+            String Message;        
          
          String query = "select * from bookings where booking_id="+"\""+booking_id2+"\"";
          
@@ -376,11 +391,6 @@ public class accomodation_staff_page extends JFrame implements ActionListener{
          
             JOptionPane.showMessageDialog(null, ex.toString(),"SQL error" , JOptionPane.INFORMATION_MESSAGE);                
         }
-         
-    }
-            
-        
-    }
-    
+   }
     
 }

@@ -176,7 +176,10 @@ public class common_staff_page  extends JFrame implements ActionListener{
         {
             bill_button.setEnabled(false);
             bill_client();
-             bill_button.setEnabled(true);
+            bill_button.setEnabled(true);
+            price_field.setText("");
+            order_id_field.setText("");
+            get_orders_from_db();
         }
         
         
@@ -270,24 +273,33 @@ public class common_staff_page  extends JFrame implements ActionListener{
                 // billing Success
                 
                 //remove from orders
-                String delete = "DELETE * from orders where order_id="+"\""+order_id+"\""; 
-                db.update_function(delete);
-                //find email
+                String delete = "DELETE from orders where order_id="+"\""+order_id+"\""; 
+                System.out.println("Delete query is: "+delete);
+                int affected = db.update_function(delete);
+                
+                if(affected>0)
+                {
+                    // delete suceess
+                    //find email
                 String query2 = "SELECT * from residents where resident_id="+"\""+resident_id+"\"";           
                 ResultSet rs2 = db.query_function(query2);
+                rs2.next();
                 String email = rs2.getString("email");
-                
+                    System.out.println("Email is::"+email);
                 // email client they were billed well.
                 String Message = "Dear Resident"+
                     "\nYou have been billed amount :KSH "+price+
                     "\nFor Item "+item_name+
-                    "\n By Employee"+staff_name+
-                    "\n thank you";
+                    "\nBy Employee : "+staff_name+
+                    "\nthank you,";
                 
                 java_mail jm = new java_mail();
-                jm.sendMail(email, Message, "information");
+                jm.sendMail(email, "information",Message);
                 
-                JOptionPane.showMessageDialog(null,"BILLING SUCCESS\ntell customer to check email","Billing Success",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,"BILLING SUCCESS\ntell customer to check email","Billing Success",JOptionPane.YES_OPTION);
+                    
+                }
+                
                 
             }
                 
@@ -296,10 +308,12 @@ public class common_staff_page  extends JFrame implements ActionListener{
             //enter into db
             //send confirmation msg and email
         } catch (SQLException ex) {
+            Logger.getLogger(common_staff_page.class.getName()).log(Level.SEVERE, null, ex);
            JOptionPane.showMessageDialog(null, ex.toString(),"SQL ERROR",JOptionPane.ERROR_MESSAGE);
         } catch (MessagingException ex) {
            JOptionPane.showMessageDialog(null, ex.toString()," Email error",JOptionPane.ERROR_MESSAGE);
-        }
+        }catch(Exception e){
+        JOptionPane.showMessageDialog(null, e.toString(),"Unknown type of error",JOptionPane.ERROR_MESSAGE);}
     }
     
 }

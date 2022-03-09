@@ -66,9 +66,11 @@ public class reserve_room extends JFrame implements ActionListener{
     JButton exit_button;
     
     java_sql_helper db;
-    reserve_room(java_sql_helper db)
+    String staff_name;
+    reserve_room(java_sql_helper db,String staff_name)
     {
         this.db = db;
+        this.staff_name = staff_name;
          System.out.println("hello i am reserve room staff module");
          // constructor code
         this.setTitle("Lexx Place Hotel Staff Module ");
@@ -389,7 +391,7 @@ public class reserve_room extends JFrame implements ActionListener{
         }
         if(ae.getSource()== exit_button)
         {this.dispose();
-        new accomodation_staff_page(db);
+        new accomodation_staff_page(db,staff_name);
         }
         
      

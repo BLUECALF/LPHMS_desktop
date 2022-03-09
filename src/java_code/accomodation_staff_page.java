@@ -60,9 +60,11 @@ public class accomodation_staff_page extends JFrame implements ActionListener{
     JButton exit_button;
     
     java_sql_helper db;
-    accomodation_staff_page(java_sql_helper db)
+    String staff_name;
+    accomodation_staff_page(java_sql_helper db,String staff_name)
     {
         this.db = db;
+        this.staff_name = staff_name;
          System.out.println("hello i am accomodation staff module");
          // constructor code
         this.setTitle("Lexx Place Hotel Staff Module ");
@@ -220,10 +222,18 @@ public class accomodation_staff_page extends JFrame implements ActionListener{
            checkin_button.setEnabled(true);
            booking_id_field.setText("");
         } 
+        if(ae.getSource() == checkout_button)
+        {
+           checkout_button.setEnabled(false);
+           checkout_client();
+           checkout_button.setEnabled(true);
+           resident_id_field.setText("");
+        } 
+        
         if(ae.getSource()== reserve_room_button)
         {
             this.dispose();
-            new reserve_room(db);
+            new reserve_room(db,staff_name);
         }
         if(ae.getSource()== exit_button)
         {this.dispose();
@@ -391,6 +401,32 @@ public class accomodation_staff_page extends JFrame implements ActionListener{
          
             JOptionPane.showMessageDialog(null, ex.toString(),"SQL error" , JOptionPane.INFORMATION_MESSAGE);                
         }
+   }
+   public void checkout_client()
+   {
+       // we need resident_id 
+       String resident_id = resident_id_field.getText();
+       
+       // validate resident id
+       
+         String query1 = "SELECT * from residents WHERE resident_id="+"\"" +resident_id+"\"";
+            ResultSet rs0 = db.query_function(query1);
+            
+            try {
+                if(rs0.next()==false)
+                {
+                  JOptionPane.showMessageDialog(null, "Check Out Failed,\n Resident Id provided does NOT exist","" , JOptionPane.INFORMATION_MESSAGE);       
+                    return;
+                }
+                // from here id is valid ... check him out..
+               new checkout_client(db,resident_id_field.getText(),staff_name);
+                               
+                
+                
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null,ex.toString() ,"SQL error", JOptionPane.INFORMATION_MESSAGE); 
+                
+            }
    }
     
 }

@@ -164,6 +164,11 @@ public class staff_login extends JFrame implements ActionListener{
                         this.dispose();
                      common_staff_page f_page = new common_staff_page(db,rs.getString("staff_category"),rs.getString("firstname"));
                     }
+                    if(rs.getString("staff_category").equals("administrator"))
+                    {
+                        this.dispose();
+                     administrator_staff_page a_page = new administrator_staff_page(db,rs.getString("firstname"));
+                    }
                     
                 
                 }

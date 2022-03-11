@@ -395,6 +395,18 @@ public class administrator_staff_page extends JFrame implements ActionListener{
        remove_staff();
        remove_staff_button.setEnabled(true);
        }
+       // if he pressed print reports.
+       if(ae.getSource()==print_reports_button)
+       {print_reports_button.setEnabled(false);
+        new reports(db);
+       print_reports_button.setEnabled(true);
+       }
+       // if he pressed broadcast
+       if(ae.getSource()==broadcast_button)
+       {broadcast_button.setEnabled(false);
+        new broadcast_page(db);
+       broadcast_button.setEnabled(true);
+       }
         
     }
     
@@ -412,7 +424,7 @@ public class administrator_staff_page extends JFrame implements ActionListener{
             "".equals(staff_category)
                 )
         {
-         JOptionPane.showMessageDialog(null, "Please Fill all the Fields ","Warning" , JOptionPane.ERROR_MESSAGE);        
+         JOptionPane.showMessageDialog(null, "Please Fill all the Fields To Add Staff ","Warning" , JOptionPane.ERROR_MESSAGE);        
          return;
         }
         // all fields are filled now we put data
@@ -534,8 +546,6 @@ public class administrator_staff_page extends JFrame implements ActionListener{
             
         }catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.toString(),"SQL ERROR" , JOptionPane.ERROR_MESSAGE); return;}
-        
-        
         
     }
 

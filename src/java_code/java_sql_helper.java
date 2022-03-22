@@ -28,7 +28,7 @@ public class java_sql_helper{
     java_sql_helper()
     {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             // loading jdbc driver is amust in servlet
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(java_sql_helper.class.getName()).log(Level.SEVERE, null, ex);
@@ -45,6 +45,7 @@ public class java_sql_helper{
         } catch (SQLException ex) {
             Logger.getLogger(java_sql_helper.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("NOT connected to database");
+            JOptionPane.showMessageDialog(j, ex.toString(),"" , JOptionPane.INFORMATION_MESSAGE);
              JOptionPane.showMessageDialog(j, "NOT connected to database","" , JOptionPane.INFORMATION_MESSAGE);
         }
         

@@ -75,7 +75,7 @@ public class staff_login extends JFrame implements ActionListener{
         instructions.setHorizontalTextPosition(JLabel.CENTER);
         
         email_label =  new JLabel();
-        email_label.setText("Email : ");
+        email_label.setText("Firstname : ");
         email_label.setFont(new Font("mv boli",Font.BOLD,13));
         email_label.setForeground(Color.WHITE);
         email_label.setBounds(50,150,100,50);
@@ -145,7 +145,7 @@ public class staff_login extends JFrame implements ActionListener{
             String password = password_field.getText();
             db = new java_sql_helper();
             
-            String query = "SELECT * from staffs WHERE firstname="+"\"" +email+"\""+"and password ="+"\""+password+"\""; 
+            String query = "SELECT * from staffs WHERE firstname="+"\"" +email+"\""+" and password ="+"\""+password+"\""; 
             ResultSet rs = db.query_function(query);
             
             try {
@@ -153,8 +153,9 @@ public class staff_login extends JFrame implements ActionListener{
                 {
                     // the staff is a true staff
                     //find hi category
-                    if(rs.getString("staff_category").equals("accomodation"))
+                    if(rs.getString("staff_category").equals("accommodation"))
                     {
+                        System.out.println("the accommodation has been called");
                         this.dispose();
                      accomodation_staff_page a_page = new accomodation_staff_page(db,rs.getString("firstname"));
                     }

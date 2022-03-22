@@ -229,10 +229,11 @@ public class reports extends JFrame implements ActionListener {
                 {
                    String query1 = "select * from bookings where booking_id="+rs.getString("resident_id");
             ResultSet rs1 =  db.query_function(query1);
+            rs1.next();
                     
                 storage = storage + line;
                                 
-                line = rs.getString("resident_id")+"\t"+rs.getString("room_no")+"\t"+rs.getString("firstname")+"\t"+rs.getString("phone")+"\t"+rs.getString("email")+"\n";
+                line = rs.getString("resident_id")+"\t"+rs.getString("room_no")+"\t"+rs.getString("firstname")+"\t"+rs1.getString("phone")+"\t"+rs.getString("email")+"\n";
                 
                 }
            

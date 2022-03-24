@@ -74,7 +74,7 @@ public class checkout_client extends JFrame implements ActionListener{
          System.out.println("hello i am checkout client module");
          // constructor code
         this.setTitle("Lexx Place Hotel Staff Module ");
-        this.setSize(1000,800);
+        this.setSize(1110,800);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().setBackground(new Color(152,13,45));
@@ -124,8 +124,8 @@ public class checkout_client extends JFrame implements ActionListener{
         
        bill_field =  new JTextArea();
         bill_field.setText("Current Bill:");
-        bill_field.setFont(new Font("mv boli",Font.BOLD,18));       
-        bill_field.setBounds(10,220,980,300);
+        bill_field.setFont(new Font("mv boli",Font.BOLD,14));       
+        bill_field.setBounds(10,220,1100,300);
         bill_field.setEditable(false);
         
         
@@ -215,6 +215,7 @@ public class checkout_client extends JFrame implements ActionListener{
                 
                 System.out.println("The diff is:::"+diff);
                 int days = (int)diff/(1000*24*60*60); 
+                if(days==0){days=1;} // minumum days is 1 
                 System.out.println("the days are:::"+days);
                 
                 // calculate price for accomodation

@@ -216,7 +216,11 @@ public class reserve_room extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource() == search_button)
         {
-         
+         if(checkin_date_field.getText().equals("")||checkout_date_field.getText().equals(""))
+            {
+            JOptionPane.showMessageDialog(null,"Fill all fields to continue " ,"FILL ALL FIELDS", JOptionPane.INFORMATION_MESSAGE); 
+            return;
+            }
           
             // code for finding room
             
@@ -316,6 +320,16 @@ public class reserve_room extends JFrame implements ActionListener{
        if(ae.getSource()== reserve_button)
         {
          // if reserve button has been clicked
+            
+            // check null values
+            if(room_no_field.getText().equals("")||firstname_field.getText().equals("")||phone_field.getText().equals(""))
+            {
+            JOptionPane.showMessageDialog(null,"Fill all fields to continue " ,"FILL ALL FIELDS", JOptionPane.INFORMATION_MESSAGE); 
+            return;
+            }
+            
+            
+            
         
             
             String firstname = firstname_field.getText();           

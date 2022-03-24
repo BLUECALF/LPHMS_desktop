@@ -277,10 +277,39 @@ public class accomodation_staff_page extends JFrame implements ActionListener{
             String query = "SELECT * from bookings WHERE booking_id="+"\"" +booking_id+"\"";
             ResultSet rs = db.query_function(query);
             
+            
             try {
                 if(rs.next()==true)
                 {
-                    // the booking_id is a true staff
+                    // the booking_id is a true
+                    //check if his check in date => today and checkout date >= today
+                    
+                    
+                    
+                    Date now = new Date();
+                    Date yesterday_date;
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(now);
+                    c.add(Calendar.DATE, -1);
+                    yesterday_date = c.getTime();
+                    Date checkindate = rs.getDate("checkin_date");
+                    Date checkoutdate = rs.getDate("checkout_date");
+                    
+                    // you can checkin anytime as long as checkout date is not before today
+                    //checkindatemust be before yesterday
+                    
+                    if(checkindate.before(now)&&checkoutdate.after(yesterday_date))
+                    {
+                    // continue
+                    }
+                    else
+                    {
+                     // continue 
+                     JOptionPane.showMessageDialog(null,"You cannot checkin before your checkin date EARLY,\nOr checkin if your checkout date HAS PASSED." ," CHECK IN Failed", JOptionPane.ERROR_MESSAGE);   
+                    return;
+                    }
+                    
+                     
                     // insert his details into resident table.
                     resident_id = rs.getString("booking_id");
                     room_no = rs.getString("room_no");

@@ -97,6 +97,7 @@ public class reports extends JFrame implements ActionListener {
         //sales 
         sales_label.setBounds(0,500,150,150);
         sales_field.setBounds(150,500,900,140);
+        sales_field.setEditable(false);
         staffs_field.setEditable(false);
         print_sales_button.setBounds(1050,500,200,50);
         print_sales_button.addActionListener(this);
